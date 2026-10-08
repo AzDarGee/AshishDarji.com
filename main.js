@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('ashish_theme', nextTheme);
         updateThemeIcon(nextTheme);
         showToast(`Theme changed to ${nextTheme.toUpperCase()}`);
-        window.location.reload();
+        // window.location.reload();
     });
 
     function updateThemeIcon(theme) {
