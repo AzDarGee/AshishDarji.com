@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     copyEmailBtn.addEventListener('click', () => {
-        copyToClipboard('ashish@ashishdarji.com', 'Email copied: ashish@ashishdarji.com');
+        copyToClipboard('ashdarji1@gmail.com', 'Email copied: ashdarji1@gmail.com');
     });
 
     // Helper: Copy to Clipboard
