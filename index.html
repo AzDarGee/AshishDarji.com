@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Ashish Darji | Official Links & Digital Hub</title>
+    <meta name="title" content="Ashish Darji | Official Links & Digital Hub">
+    <meta name="description"
+        content="Explore social profiles, projects, articles, and contact info for Ashish Darji — Full-Stack Software Engineer, Tech Innovator, and Content Creator.">
+    <meta name="keywords"
+        content="Ashish Darji, Software Engineer, Full Stack Developer, Tech Innovator, Coding, Portfolio, Social Links">
+    <meta name="author" content="Ashish Darji">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ashishdarji.com/">
+    <meta property="og:title" content="Ashish Darji | Official Links & Digital Hub">
+    <meta property="og:description"
+        content="Connect with Ashish Darji across all platforms. Software Architect, Full-Stack Engineer, and Tech Enthusiast.">
+    <meta property="og:image" content="profile.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ashishdarji.com/">
+    <meta property="twitter:title" content="Ashish Darji | Official Links & Digital Hub">
+    <meta property="twitter:description"
+        content="Connect with Ashish Darji across all platforms. Software Architect, Full-Stack Engineer, and Tech Enthusiast.">
+    <meta property="twitter:image" content="profile.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="profile.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <!-- Ambient Interactive Canvas Background -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- Background Blur Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Floating Navigation & Top Bar -->
+        <header class="top-nav" id="top-nav">
+            <div class="nav-brand">
+                <span class="brand-dot"></span>
+                <span class="brand-text">AshishDarji.com</span>
+            </div>
+
+            <div class="nav-actions">
+                <!-- Theme Switcher Dropdown/Toggle -->
+                <button class="icon-btn theme-toggle-btn" id="theme-toggle" title="Switch Color Theme"
+                    aria-label="Toggle Theme">
+                    <i class="fa-solid me-moon" id="theme-icon"></i>
+                </button>
+
+                <!-- Share Profile Button -->
+                <button class="icon-btn" id="share-btn" title="Share Profile" aria-label="Share Profile">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+
+                <!-- QR Code Modal Trigger -->
+                <button class="icon-btn" id="qr-btn" title="Show QR Code" aria-label="Show QR Code">
+                    <i class="fa-solid fa-qrcode"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-card" id="main-content">
+            <!-- Profile Header Section -->
+            <section class="profile-section" id="profile-header">
+                <div class="avatar-wrapper">
+                    <div class="avatar-ring"></div>
+                    <img src="profile.png" alt="Ashish Darji" class="profile-avatar" id="user-avatar">
+                    <div class="status-indicator" title="Available for advisory & engineering projects">
+                        <span class="status-pulse"></span>
+                    </div>
+                </div>
+
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profile-name">
+                        Ashish Darji
+                        <span class="verified-badge" title="Verified Profile"><i
+                                class="fa-solid fa-circle-check"></i></span>
+                    </h1>
+
+                    <p class="profile-tagline" id="profile-tagline">
+                        Full-Stack Software Engineer &amp; Tech Innovator &amp; Artist
+                    </p>
+
+                    <p class="profile-bio" id="profile-bio">
+                        Crafting high-performance web applications, cloud systems &amp; elegant developer tools.
+                        Passionate about open source, AI, and design systems.
+                        <br><br>
+                        Released 8 studio albums under the moniker Zygo Zayano.
+                    </p>
+
+                    <!-- Meta Badges & Local Time -->
+                    <div class="meta-pills">
+                        <span class="pill-badge"><i class="fa-solid fa-location-dot"></i> Ottawa / Global</span>
+                        <span class="pill-badge" id="local-time-pill"><i class="fa-regular fa-clock"></i> <span
+                                id="clock-display">--:-- --</span></span>
+                        <span class="pill-badge highlight"><i class="fa-solid fa-briefcase"></i> Open for
+                            Consulting</span>
+                    </div>
+
+                    <!-- Primary Action Buttons -->
+                    <div class="primary-actions">
+                        <button class="btn btn-primary" id="open-contact-btn">
+                            <i class="fa-solid fa-paper-plane"></i> Get in Touch
+                        </button>
+                        <button class="btn btn-secondary" id="copy-email-btn">
+                            <i class="fa-regular fa-envelope"></i> Copy Email
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search & Category Filter Section -->
+            <section class="controls-section" id="controls-section">
+                <!-- Search Bar -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="link-search-input" placeholder="Search links, platforms, skills..."
+                        aria-label="Search links">
+                    <span class="kbd-shortcut" id="kbd-hint">/</span>
+                    <button class="clear-search-btn hidden" id="clear-search-btn" aria-label="Clear Search">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="filter-pills" id="category-filters" role="tablist">
+                    <button class="filter-btn active" data-category="all" role="tab">All Links</button>
+                    <button class="filter-btn" data-category="work" role="tab">Work, Code & Music</button>
+                    <button class="filter-btn" data-category="social" role="tab">Social & Community</button>
+                    <button class="filter-btn" data-category="content" role="tab">Articles & Media</button>
+                </div>
+            </section>
+
+            <!-- Social Links Grid / Container -->
+            <section class="links-section" id="links-container" aria-live="polite">
+                <!-- Links will be rendered dynamically by main.js with fallback standard links -->
+            </section>
+
+            <!-- Tech Stack & Skills Highlight -->
+            <section class="skills-section" id="skills-section">
+                <h3 class="section-title"><i class="fa-solid fa-code"></i> Core Expertise & Technologies</h3>
+                <div class="skills-grid">
+                    <span class="skill-tag"><i class="fa-brands fa-html5"></i> Ruby on Rails &amp;
+                        Turbo/StimulusJS</span>
+                    <span class="skill-tag"><i class="fa-brands fa-react"></i> React &amp; Next.js</span>
+                    <span class="skill-tag"><i class="fa-brands fa-js"></i> TypeScript / JS</span>
+                    <span class="skill-tag"><i class="fa-brands fa-node-js"></i> Node.js &amp; Express</span>
+                    <span class="skill-tag"><i class="fa-brands fa-python"></i> Python &amp; AI</span>
+                    <span class="skill-tag"><i class="fa-solid fa-database"></i> PostgreSQL</span>
+                    <span class="skill-tag"><i class="fa-brands fa-aws"></i> AWS &amp; Cloud Architecture</span>
+                    <span class="skill-tag"><i class="fa-brands fa-docker"></i> Docker &amp; DevOps</span>
+                    <span class="skill-tag"><i class="fa-solid fa-layer-group"></i> System Architecture</span>
+                    <span class="skill-tag"><i class="fa-solid fa-palette"></i> UI/UX Design</span>
+                    <span class="skill-tag"><i class="fa-solid fa-camera"></i>Photography & Videography</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; <span id="current-year"></span> <strong>Ashish Darji</strong>. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="https://ashishdarji.com" id="footer-domain">AshishDarji.com</a>
+                    <span class="dot-separator">•</span>
+                    <button class="text-link-btn" id="privacy-modal-btn">Privacy &amp; Contact Info</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Contact Modal -->
+    <div class="modal-backdrop hidden" id="contact-modal" aria-hidden="true" role="dialog">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-envelope-open-text"></i> Send a Message to Ashish</h3>
+                <button class="close-modal-btn" id="close-contact-modal" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form class="contact-form" id="contact-form">
+                <div class="form-group">
+                    <label for="contact-name">Your Name</label>
+                    <input type="text" id="contact-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Your Email</label>
+                    <input type="email" id="contact-email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-subject">Topic</label>
+                    <select id="contact-subject" required>
+                        <option value="General Hello">Saying Hello 👋</option>
+                        <option value="Consulting / Project">Consulting & Contract Work 💼</option>
+                        <option value="Speaking / Podcast">Tech Speaking & Podcast 🎙️</option>
+                        <option value="Open Source Collaboration">Open Source Collaboration 🚀</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" rows="4" placeholder="Hi Ashish, I'd love to chat about..."
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="send-form-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="modal-backdrop hidden" id="qr-modal" aria-hidden="true" role="dialog">
+        <div class="modal-card modal-sm text-center">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-qrcode"></i> Scan to Open</h3>
+                <button class="close-modal-btn" id="close-qr-modal" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="qr-container">
+                <div id="qrcode-canvas-wrapper">
+                    <!-- Dynamic SVG QR Code generated in main.js -->
+                </div>
+                <p class="qr-label">AshishDarji.com</p>
+                <p class="qr-subtext">Scan with smartphone camera to view profile</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- JavaScript File -->
+    <script src="main.js"></script>
+</body>
+
+</html>
