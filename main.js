@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 'youtube',
-            title: 'YouTube Channel',
+            title: 'AshThruTheLens YouTube',
             subtitle: '@ashthruthelens • Web dev tutorials, architecture & tech reviews',
             url: 'https://www.youtube.com/@ashthruthelens',
             iconClass: 'fa-brands fa-youtube',
