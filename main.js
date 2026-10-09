@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 'discord',
-            title: 'Discord Art Community',
+            title: 'Saanskara Community',
             subtitle: "Saanskara • Discussions on Art, Community, Culture, & Tech",
             url: 'https://discord.com/invite/pxqxZKACKs',
             iconClass: 'fa-brands fa-discord',
