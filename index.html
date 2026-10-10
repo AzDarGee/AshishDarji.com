@@ -162,6 +162,21 @@
                 <!-- Links will be rendered dynamically by main.js with fallback standard links -->
             </section>
 
+            <!-- Modeling Photo Gallery (Articles & Media Tab) -->
+            <section class="gallery-section hidden" id="gallery-section">
+                <div class="gallery-header">
+                    <div class="gallery-title-box">
+                        <h3 class="gallery-title"><i class="fa-solid fa-camera-retro"></i> Modeling &amp; Editorial Lookbook</h3>
+                        <span class="gallery-badge"><i class="fa-solid fa-sparkles"></i> Visuals</span>
+                    </div>
+                    <p class="gallery-subtitle">Selected portfolio shots, fashion lookbooks &amp; creative lifestyle editorials.</p>
+                </div>
+
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Populated dynamically by main.js -->
+                </div>
+            </section>
+
             <!-- Tech Stack & Skills Highlight -->
             <section class="skills-section" id="skills-section">
                 <h3 class="section-title"><i class="fa-solid fa-code"></i> Core Expertise & Technologies</h3>
@@ -251,6 +266,32 @@
                 </div>
                 <p class="qr-label">AshishDarji.com</p>
                 <p class="qr-subtext">Scan with smartphone camera to view profile</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal for Modeling Photos -->
+    <div class="modal-backdrop hidden" id="lightbox-modal" aria-hidden="true" role="dialog">
+        <div class="lightbox-card">
+            <button class="lightbox-close-btn" id="close-lightbox-btn" aria-label="Close Lightbox">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button class="lightbox-nav-btn prev-btn" id="lightbox-prev-btn" aria-label="Previous Photo">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-nav-btn next-btn" id="lightbox-next-btn" aria-label="Next Photo">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+            <div class="lightbox-image-wrapper">
+                <img src="" alt="Modeling photo" id="lightbox-img" class="lightbox-img">
+            </div>
+            <div class="lightbox-caption">
+                <div class="lightbox-caption-text">
+                    <span class="lightbox-tag" id="lightbox-tag"></span>
+                    <h4 class="lightbox-title" id="lightbox-title"></h4>
+                    <p class="lightbox-subtitle" id="lightbox-subtitle"></p>
+                </div>
+                <div class="lightbox-counter" id="lightbox-counter">1 / 4</div>
             </div>
         </div>
     </div>

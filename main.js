@@ -109,9 +109,83 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    // Modeling Pictures Dataset
+    // Available layout options per image:
+    //  - 'left' (or 'left aligned'): Left column, left image focus, left-aligned captions
+    //  - 'center' (or 'center aligned' / 'full'): Full-width featured row, centered image & captions
+    //  - 'right' (or 'right aligned'): Right column, right image focus, right-aligned captions
+    // Optional: 'imageAlign' (e.g. 'left', 'center', 'right', 'top', 'bottom') to override crop focus
+    const modelingPhotos = [
+        {
+            id: 'photo-1',
+            src: 'profile.png',
+            title: 'Night City Sessions',
+            subtitle: 'Urban streetwear with headphones & cityscape bokeh',
+            tag: 'Streetwear & Lifestyle',
+            layout: 'left' // Options: 'left', 'center', 'right'
+        },
+        {
+            id: 'photo-2',
+            src: '/photos/AshishDarji/modeling-BossInTheWild.jpg',
+            title: 'Boss In The Wild',
+            subtitle: 'Fashion editorial',
+            tag: 'Nightwear',
+            layout: 'right' // Options: 'left', 'center', 'right'
+        },
+        {
+            id: 'photo-3',
+            src: '/photos/AshishDarji/modeling-contemplating-in-the-studio.png',
+            title: 'Contemplating In The Studio',
+            subtitle: 'Thoughts of You & I. Thoughts of Existence.',
+            tag: 'Multichrome',
+            layout: 'center' // Options: 'left', 'center', 'right'
+        },
+        {
+            id: 'photo-4',
+            src: '/photos/AshishDarji/modeling-LaptopTracks-v2.jpg',
+            title: 'Artisan Multichrome',
+            subtitle: 'Creative Captures of Laptop Tracks',
+            tag: 'Multichrome',
+            layout: 'left' // Options: 'left', 'center', 'right'
+        },
+        {
+            id: 'photo-5',
+            src: '/photos/AshishDarji/modeling-InTheStudio.jpg',
+            title: 'In The Studio',
+            subtitle: 'Fashion editorial',
+            tag: 'Multichrome',
+            layout: 'right' // Options: 'left', 'center', 'right'
+        },
+        {
+            id: 'photo-6',
+            src: '/photos/AshishDarji/modeling-Yoga.jpg',
+            title: 'Reverse Warrior Pose',
+            subtitle: 'Yoga & wellness photoshoot',
+            tag: 'Yoga & Wellness',
+            layout: 'center' // Options: 'left', 'center', 'right'
+        }
+    ];
+
+    // Tab Persistence Helpers (without modifying URL)
+    const validCategories = ['all', 'work', 'social', 'content'];
+    function getSavedTab() {
+        try {
+            return localStorage.getItem('ashish_active_tab');
+        } catch (err) {
+            return null;
+        }
+    }
+    function saveActiveTab(tab) {
+        try {
+            localStorage.setItem('ashish_active_tab', tab);
+        } catch (err) {}
+    }
+
     // State Variables
-    let currentCategory = 'all';
+    const initialSavedTab = getSavedTab();
+    let currentCategory = (initialSavedTab && validCategories.includes(initialSavedTab)) ? initialSavedTab : 'all';
     let searchQuery = '';
+    let currentLightboxIndex = 0;
 
     // DOM Element References
     const linksContainer = document.getElementById('links-container');
@@ -127,6 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const clockDisplay = document.getElementById('clock-display');
     const currentYearSpan = document.getElementById('current-year');
 
+    // Gallery & Lightbox Elements
+    const gallerySection = document.getElementById('gallery-section');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+    const lightboxPrevBtn = document.getElementById('lightbox-prev-btn');
+    const lightboxNextBtn = document.getElementById('lightbox-next-btn');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxTag = document.getElementById('lightbox-tag');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxSubtitle = document.getElementById('lightbox-subtitle');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+
     // Modals & Forms
     const contactModal = document.getElementById('contact-modal');
     const closeContactModal = document.getElementById('close-contact-modal');
@@ -135,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const qrModal = document.getElementById('qr-modal');
     const closeQrModal = document.getElementById('close-qr-modal');
     const qrcodeWrapper = document.getElementById('qrcode-canvas-wrapper');
+
 
     // 2. Initialize Year & Clock
     if (currentYearSpan) {
@@ -240,18 +328,160 @@ document.addEventListener('DOMContentLoaded', () => {
                 copyToClipboard(urlToCopy, 'Link copied to clipboard!');
             });
         });
+
+        // Update Modeling Gallery Visibility for Articles & Media tab
+        updateGalleryVisibility();
     }
 
+    // 4b. Modeling Photo Gallery & Lightbox Logic
+    function renderGallery() {
+        if (!galleryGrid) return;
+
+        galleryGrid.innerHTML = modelingPhotos.map((photo, index) => {
+            // Normalize layout string: 'left', 'center', 'right', 'full', 'center-compact'
+            const rawLayout = (photo.layout || 'center').toLowerCase().trim().replace(/\s+/g, '-');
+            let layoutClass = 'layout-center';
+            if (rawLayout.includes('left')) {
+                layoutClass = 'layout-left';
+            } else if (rawLayout.includes('right')) {
+                layoutClass = 'layout-right';
+            } else if (rawLayout.includes('full') || rawLayout.includes('wide')) {
+                layoutClass = 'layout-full';
+            } else if (rawLayout.includes('compact') || rawLayout.includes('card')) {
+                layoutClass = 'layout-center-compact';
+            } else if (rawLayout.includes('center')) {
+                layoutClass = 'layout-center';
+            }
+
+            // Image focal / object-position alignment (defaults according to layout)
+            const imgAlign = photo.imageAlign || photo.objectPosition || photo.align || (
+                layoutClass === 'layout-left' ? 'left center' :
+                    layoutClass === 'layout-right' ? 'right center' : 'center center'
+            );
+
+            // Optional aspect ratio override
+            const aspectStyle = photo.aspectRatio ? `aspect-ratio: ${photo.aspectRatio};` : '';
+            const inlineStyle = aspectStyle ? `style="${aspectStyle}"` : '';
+
+            return `
+                <div class="gallery-card ${layoutClass}" data-index="${index}" data-layout="${layoutClass}" ${inlineStyle} title="Click to view ${escapeHtml(photo.title)}">
+                    <img src="${photo.src}" alt="${escapeHtml(photo.title)}" class="gallery-img" style="object-position: ${imgAlign};" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-card-tag">${escapeHtml(photo.tag)}</span>
+                        <h4 class="gallery-card-title">${escapeHtml(photo.title)}</h4>
+                    </div>
+                    <div class="gallery-expand-hint" aria-hidden="true">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        galleryGrid.querySelectorAll('.gallery-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const index = parseInt(card.getAttribute('data-index'), 10);
+                openLightbox(index);
+            });
+        });
+    }
+
+    function updateGalleryVisibility() {
+        if (!gallerySection) return;
+        const query = searchQuery.toLowerCase().trim();
+        const matchesQuery = query && (
+            'modeling'.includes(query) ||
+            'photos'.includes(query) ||
+            'pictures'.includes(query) ||
+            'gallery'.includes(query) ||
+            modelingPhotos.some(p => p.title.toLowerCase().includes(query) || p.tag.toLowerCase().includes(query))
+        );
+
+        if (currentCategory === 'content' || matchesQuery) {
+            gallerySection.classList.remove('hidden');
+        } else {
+            gallerySection.classList.add('hidden');
+        }
+    }
+
+    function openLightbox(index) {
+        if (!lightboxModal) return;
+        currentLightboxIndex = index;
+        updateLightboxContent();
+        lightboxModal.classList.remove('hidden');
+        lightboxModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function updateLightboxContent() {
+        const photo = modelingPhotos[currentLightboxIndex];
+        if (!photo) return;
+
+        lightboxImg.src = photo.src;
+        lightboxImg.alt = photo.title;
+        lightboxTag.textContent = photo.tag;
+        lightboxTitle.textContent = photo.title;
+        lightboxSubtitle.textContent = photo.subtitle;
+        lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${modelingPhotos.length}`;
+    }
+
+    function closeLightbox() {
+        if (!lightboxModal) return;
+        lightboxModal.classList.add('hidden');
+        lightboxModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function nextLightbox() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % modelingPhotos.length;
+        updateLightboxContent();
+    }
+
+    function prevLightbox() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + modelingPhotos.length) % modelingPhotos.length;
+        updateLightboxContent();
+    }
+
+    if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
+    if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextLightbox(); });
+    if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevLightbox(); });
+    if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+            if (e.target === lightboxModal) closeLightbox();
+        });
+    }
+
+    // Synchronize active UI pill state with the current category
+    function updateCategoryTabUI(category) {
+        if (!categoryFilters) return;
+        const buttons = categoryFilters.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('data-category') === category) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            }
+        });
+    }
+
+    // Restore active tab button UI state on page load
+    updateCategoryTabUI(currentCategory);
+
+    // Initialize gallery & links
+    renderGallery();
     renderLinks();
+
 
     // 5. Category Filtering
     categoryFilters.addEventListener('click', (e) => {
         const btn = e.target.closest('.filter-btn');
         if (!btn) return;
 
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = btn.getAttribute('data-category');
+        const cat = btn.getAttribute('data-category');
+        if (!cat) return;
+
+        currentCategory = cat;
+        saveActiveTab(currentCategory);
+        updateCategoryTabUI(currentCategory);
         renderLinks();
     });
 
@@ -397,13 +627,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Global Esc Key Handler
+    // Global Esc & Lightbox Navigation Key Handler
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             contactModal.classList.add('hidden');
             qrModal.classList.add('hidden');
+            if (lightboxModal) closeLightbox();
+        } else if (e.key === 'ArrowRight' && lightboxModal && !lightboxModal.classList.contains('hidden')) {
+            nextLightbox();
+        } else if (e.key === 'ArrowLeft' && lightboxModal && !lightboxModal.classList.contains('hidden')) {
+            prevLightbox();
         }
     });
+
 
     // 10. Simple Dynamic SVG QR Code Generator
     function generateSvgQRCode(text) {
